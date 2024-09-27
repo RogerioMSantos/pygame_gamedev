@@ -1,12 +1,16 @@
-from imagens import Imagens
+from components.physics import Physics
+from components.renderers import SpriteRenderer
+from objects.rect import Rect
 
-class Obstaculo:
-    def __init__(self, item, largura_total, altura_total):
-        self.rect, self.imagem = Imagens(item, largura_total, altura_total)
-        self.velocidade = 5
+import pygame
 
-    def mover(self):
-        self.rect.x -= self.velocidade
+class Obstaculo(Rect):
+    def __init__(self, position, size):
+        image = pygame.image.load('hidrante.png')
+        image = pygame.transform.scale(image, size.as_tuple())
+        super().__init__(position,height=size,width=size,name="obstaculo")
+        self.components.add(Physics)
+        self.components.add(SpriteRenderer,image)
+        self.physics = self.components.get(Physics)
+        self.physics.velocity.x = -5
 
-    def desenhar(self, tela):
-        tela.blit(self.imagem, self.rect.topleft)  # Renderizar a imagem na posição do obstáculo

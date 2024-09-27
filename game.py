@@ -1,7 +1,7 @@
 import pygame
 import random
 from time import time
-from jogador import Jogador
+from player import Player
 from obstaculo import Obstaculo
 from fundo import Fundo
 
@@ -43,7 +43,7 @@ class PowerUp:
 
 class Jogo:
     def __init__(self):
-        self.jogador = Jogador(ALTURA, LARGURA)
+        self.player = Player(ALTURA, LARGURA)
         self.obstaculos = []
         self.moedas = []
         self.power_ups = []
@@ -54,7 +54,7 @@ class Jogo:
         self.fonte_titulo = pygame.font.Font("Gemstone.ttf", 60)
 
     def reiniciar(self):
-        self.jogador = Jogador(ALTURA, LARGURA)
+        self.player = Player(ALTURA, LARGURA)
         self.obstaculos = []
         self.moedas = []
         self.power_ups = []
@@ -93,31 +93,31 @@ class Jogo:
 
     def verificar_colisoes(self):
         for obstaculo in self.obstaculos[:]:
-            if self.jogador.rect.colliderect(obstaculo.rect):
+            if self.player.rect.colliderect(obstaculo.rect):
                 print(f"Fim de jogo! Pontuação: {self.pontuacao}")
                 return False
 
         for moeda in self.moedas[:]:
-            if self.jogador.rect.colliderect(moeda.rect):
+            if self.player.rect.colliderect(moeda.rect):
                 self.moedas.remove(moeda)
                 self.pontuacao += 10
                 self.moedas_coletadas += 1
 
         for power_up in self.power_ups[:]:
-            if self.jogador.rect.colliderect(power_up.rect):
+            if self.player.rect.colliderect(power_up.rect):
                 self.power_ups.remove(power_up)
-                self.jogador.voando = True
-                self.jogador.tempo_voo = time()
-                self.jogador.gravidade = 0
-                self.jogador.pode_pular = False
-                self.jogador.velocidade_vertical = 0
+                self.player.voando = True
+                self.player.tempo_voo = time()
+                self.player.gravidade = 0
+                self.player.pode_pular = False
+                self.player.velocidade_vertical = 0
                 self.inicio_voo = time()
 
         return True
 
     def atualizar_jogo(self):
-        self.jogador.pular()
-        self.jogador.atualizar_voo()
+        self.player.pular()
+        self.player.atualizar_voo()
 
         for obstaculo in self.obstaculos:
             obstaculo.mover()
@@ -132,7 +132,7 @@ class Jogo:
         fundo.mover()
         fundo.desenhar(tela)
     
-        pygame.draw.rect(tela, BRANCO, self.jogador.rect)
+        pygame.draw.rect(tela, BRANCO, self.player.rect)
 
         for obstaculo in self.obstaculos:
             obstaculo.desenhar(tela)
@@ -148,8 +148,8 @@ class Jogo:
         texto_pontuacao = self.fonte.render(f"Pontuação: {self.pontuacao}", True, BRANCO)
         texto_moedas = self.fonte.render(f"Moedas: {self.moedas_coletadas}", True, AMARELO)
         texto_tempo = self.fonte.render(f"Tempo: {tempo_vivo:.0f}s", True, BRANCO)
-        if self.jogador.voando:
-            tempo_de_voo = self.jogador.tempo_voo + 10 - time()
+        if self.player.voando:
+            tempo_de_voo = self.player.tempo_voo + 10 - time()
             texto_tempo_voo = self.fonte.render(f"Tempo de voo: {tempo_de_voo:.0f}s", True, BRANCO)
             tela.blit(texto_tempo_voo, (10, 130))
         tela.blit(texto_pontuacao, (10, 10))
@@ -169,23 +169,9 @@ def main():
     sair = False
 
     while not sair:
-        if not jogando:
-            jogando = jogo.mostrar_tela_inicial()
-            if not jogando:
-                sair = True
-            else:
-                jogo.reiniciar()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                sair = True
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and not jogo.jogador.pulando:
-                    jogo.jogador.pulando = True
 
         teclas = pygame.key.get_pressed()
-        jogo.jogador.mover(teclas)
-        jogo.jogador.aplicar_voo(teclas)
+        jogo.player.aplicar_voo(teclas)
 
 
         jogo.gerar_obstaculos()
