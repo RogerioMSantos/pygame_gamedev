@@ -1,16 +1,36 @@
+import random
 from components.physics import Physics
 from components.renderers import SpriteRenderer
+from core.game_math import Vector2d
 from objects.rect import Rect
 
 import pygame
 
 class Obstaculo(Rect):
-    def __init__(self, position, size):
-        image = pygame.image.load('hidrante.png')
-        image = pygame.transform.scale(image, size.as_tuple())
-        super().__init__(position,height=size,width=size,name="obstaculo")
-        self.components.add(Physics)
-        self.components.add(SpriteRenderer,image)
-        self.physics = self.components.get(Physics)
-        self.physics.velocity.x = -5
+    SPEED = 500
+    def __init__(self,screen, speed=SPEED):
+        image,size = Obstaculo.get_random_image()
+        image = pygame.image.load(image)
+        
+        position= Vector2d(screen.get_width(),screen.get_height() - size[1] + 10)
 
+        super().__init__(position,height=size[1] * 0.8,width=size[0] * 0.9 ,name="obstaculo",draw_rect=True)
+        
+        image = pygame.transform.scale(image, size)
+
+        self.components.add(SpriteRenderer,image)
+        
+        self.components.add(Physics, trigger_gravity=False)
+        self.physics = self.components.get(Physics)
+        self.physics.velocity.x = -speed
+        self.physics.triger_gravity = False
+
+
+    def update(self):
+        super().update()
+
+
+    @staticmethod
+    def get_random_image() -> tuple:
+        images = [('cone.png',(60,100)), ('caixa.png',(100,100)), ('hidrante.png',(60,100))]
+        return random.choice(images)

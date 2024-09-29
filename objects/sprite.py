@@ -14,7 +14,7 @@ class Sprite(GameObject):
                  position: Optional[Vector2d] = None,
                  active=True,
                  name=""):
-        super().__init__(active, name)
+        super().__init__(active, name,position=position)
         self.components.add(SpriteRenderer(self, image))
 
     @staticmethod

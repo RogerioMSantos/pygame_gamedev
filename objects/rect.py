@@ -14,11 +14,13 @@ class Rect(GameObject):
                  width: float = 10,
                  color=(128, 128, 128),
                  active=True,
-                 name=""):
+                 name="",
+                 draw_rect=True):
         super().__init__(position, active, name)
         self.height = height
         self.width = width
-        self.components.add(RectangleRenderer, height=height, width=width, color=color)
+        if draw_rect:
+            self.components.add(RectangleRenderer, height=height, width=width, color=color)
 
     def as_tuple(self):
         return (self.position.x,

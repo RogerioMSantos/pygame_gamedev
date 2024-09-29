@@ -28,8 +28,8 @@ class Manager:
 
     def fixed_update(self):
         for o in self._objects:
-            if o.active:
-                o.fixed_update()
+            #if o.active:
+            o.fixed_update()
 
     def draw(self, screen):
         for o in self._objects:
