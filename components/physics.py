@@ -13,6 +13,7 @@ class Physics(Component):
         self.gravity = gravity
         self.trigger_gravity = trigger_gravity
         self.acceleration = acceleration
+        self.max_velocity = max_velocity
         
     def fixed_update(self):
         self.object.position += self.velocity * Time.fixed_delta_time
