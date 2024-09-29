@@ -15,7 +15,6 @@ class Background:
             self.position.x = 0
 
     def draw(self):
-        print(self.position)
         
         self.screen.blit(self.image, (self.position.x, self.position.y))
 

@@ -14,7 +14,7 @@ class Obstaculo(Rect):
         
         position= Vector2d(screen.get_width(),screen.get_height() - size[1] + 10)
 
-        super().__init__(position,height=size[1] * 0.8,width=size[0] * 0.9 ,name="obstaculo",draw_rect=True)
+        super().__init__(position,height=size[1] * 0.8,width=size[0] * 0.9 ,name="obstaculo",draw_rect=False)
         
         image = pygame.transform.scale(image, size)
 

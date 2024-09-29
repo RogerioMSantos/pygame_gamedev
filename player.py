@@ -25,7 +25,6 @@ class Player(Rect):
 
         if not self.jumping and not self.is_flying and pygame.key.get_pressed()[pygame.K_SPACE]:
             self.physics.velocity.y = -Player.JUMP_SPEED
-            print("pulo")
             self.renderer.actual_sprite_name = "jumping"
             self.renderer.actual_sprite = 0
             self.jumping = True
