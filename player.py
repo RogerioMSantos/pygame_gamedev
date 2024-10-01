@@ -44,11 +44,11 @@ class Player(Rect):
         self.renderer = self.components.get(SpriteSheetRenderer)
 
         self.renderer.actual_sprite_name = "running"
-        self.renderer.load_sprites(image=pygame.image.load("image.png"),sprite_width=130, sprite_height=80, offset_x=55 + 130 * 4, offset_y=50, sprite_name="running",quantity_line=1,quantity_column=6)
+        self.renderer.load_sprites(image=pygame.image.load("./assets/image.png"),sprite_width=130, sprite_height=80, offset_x=55 + 130 * 4, offset_y=50, sprite_name="running",quantity_line=1,quantity_column=6)
 
         #cria o sprite pulando
-        self.renderer.load_sprites(image=pygame.image.load("image.png"),sprite_width=145, sprite_height=100, offset_x=116, offset_y=388, sprite_name="jumping",quantity_line=1,quantity_column=8)
+        self.renderer.load_sprites(image=pygame.image.load("./assets/image.png"),sprite_width=145, sprite_height=100, offset_x=116, offset_y=388, sprite_name="jumping",quantity_line=1,quantity_column=8)
 
         #cria o sprite voando
-        self.renderer.load_sprites(image=pygame.image.load("image.png"),sprite_width=247, sprite_height=128, offset_x=65, offset_y=156, sprite_name="flying",quantity_line=1,quantity_column=3)
+        self.renderer.load_sprites(image=pygame.image.load("./assets/image.png"),sprite_width=247, sprite_height=128, offset_x=65, offset_y=156, sprite_name="flying",quantity_line=1,quantity_column=3)
 

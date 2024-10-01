@@ -48,17 +48,22 @@ class SpriteSheetRenderer(Component):
         self.owner = owner
 
 
-    def load_sprites(self,image ,sprite_width=10, sprite_height=10, offset_x=0, offset_y=0, sprite_name="",quantity_line=None,quantity_column=None):
+    def load_sprites(self,image ,sprite_width=10, sprite_height=10, offset_x=0, offset_y=0, offset_x_per_frame=0,offset_y_per_frame=0, sprite_name="",quantity_line=None,quantity_column=None):
         self.sprite_dict[sprite_name] = []
         if quantity_line is None:
-            quantity_line = image.get_width() / sprite_width
+            quantity_line = int(image.get_width() / sprite_width)
         if quantity_column is None:
-            quantity_column = image.get_height() / sprite_height
+            quantity_column = int(image.get_height() / sprite_height)
         for i in range(0, quantity_column):
             for j in range(0, quantity_line):
                 sprite = pygame.Surface((sprite_width, sprite_height), pygame.SRCALPHA)
-                sprite.blit(image, (0, 0), (offset_x + i*sprite_width, offset_y + j*sprite_height, sprite_width, sprite_height))
+                sprite.blit(image, (0, 0), (offset_x + i*sprite_width + offset_x_per_frame * i, offset_y + j*sprite_height + offset_y_per_frame * j, sprite_width, sprite_height))
                 self.sprite_dict[sprite_name].append(sprite)
+
+    def save_sprites(self, output_path):
+        for sprite_name, sprites in self.sprite_dict.items():
+            for i, sprite in enumerate(sprites):
+                pygame.image.save(sprite, f"{output_path}/{sprite_name}_{i}.png")
 
 
     def draw(self, screen):

@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Spritesheet Example")
 
 # Carregar a imagem da sprite sheet
-sprite_sheet = pygame.image.load("image.png").convert_alpha()
+sprite_sheet = pygame.image.load("./assets/bird.png").convert_alpha()
 
 # Dimensões iniciais de cada sprite
 sprite_width = 128
@@ -30,6 +30,9 @@ offset_y = 0
 # Fonte para exibir o tamanho do corte e a distância entre sprites
 font = pygame.font.SysFont(None, 36)
 
+# Nova variável para o offset entre sprites
+offset_x_per_frame = 0
+offset_y_per_frame = 0
 # Função para recortar os sprites
 def get_sprite(sheet, x, y, width, height):
     sprite = pygame.Surface((width, height), pygame.SRCALPHA)
@@ -43,13 +46,8 @@ def recortar_sprites():
 
     # Recortar os sprites da primeira linha (sprites uniformes)
     for i in range(6):
-        sprite = get_sprite(sprite_sheet, offset_x + i * sprite_width, offset_y, sprite_width, sprite_height)
+        sprite = get_sprite(sprite_sheet, offset_x + 0 * sprite_width+ (offset_x_per_frame * i), offset_y + sprite_height * i + (offset_y_per_frame * i), sprite_width, sprite_height)
         sprites.append(sprite)
-
-    # Recortar os sprites da segunda linha (sprites com tamanhos diferentes)
-    sprites.append(get_sprite(sprite_sheet, offset_x, sprite_height + offset_y, 150, sprite_height))  # Primeiro sprite maior
-    sprites.append(get_sprite(sprite_sheet, offset_x + 150, sprite_height + offset_y, 140, sprite_height))  # Segundo sprite
-    sprites.append(get_sprite(sprite_sheet, offset_x + 290, sprite_height + offset_y, 160, sprite_height))  # Terceiro sprite maior
 
 # Recortar as sprites inicialmente
 recortar_sprites()
@@ -79,6 +77,13 @@ decrease_offset_x = False
 increase_offset_y = False
 decrease_offset_y = False
 
+# Controle do offset entre sprites
+increase_offset_x_per_frame = False
+decrease_offset_x_per_frame = False
+increase_offset_y_per_frame = False
+decrease_offset_y_per_frame = False
+
+
 # Função para desenhar o tamanho do corte e a distância entre as sprites na tela
 def draw_text(text, x, y):
     label = font.render(text, True, (255, 255, 255))
@@ -104,6 +109,8 @@ while running:
     draw_text(f"Width: {sprite_width}, Height: {sprite_height}", 10, 10)
     draw_text(f"Offset X: {offset_x}, Offset Y: {offset_y}", 10, 50)
     draw_text(f"Spacing: {sprite_spacing}", 10, 90)
+    draw_text(f"Offset X per Frame: {offset_x_per_frame}", 10, 130)  # Exibir o valor do offset_x_per_frame
+    draw_text(f"Offset Y per Frame: {offset_y_per_frame}", 10, 170)  # Exibir o valor do offset_y_per_frame
 
     # Verificar eventos
     for event in pygame.event.get():
@@ -139,6 +146,17 @@ while running:
                 decrease_offset_y = True
             elif event.key == pygame.K_f:
                 increase_offset_y = True
+
+            # Aumentar/Diminuir offset entre sprites com A e S
+            elif event.key == pygame.K_a:
+                decrease_offset_x_per_frame = True
+            elif event.key == pygame.K_s:
+                increase_offset_x_per_frame = True
+
+            elif event.key == pygame.K_z:
+                decrease_offset_y_per_frame = True
+            elif event.key == pygame.K_x:
+                increase_offset_y_per_frame = True
 
             # Mover a tela para a esquerda ou direita
             elif event.key == pygame.K_a:  # Mover para a esquerda
@@ -177,6 +195,17 @@ while running:
             elif event.key == pygame.K_f:
                 increase_offset_y = False
 
+            # Parar controle do offset entre sprites
+            elif event.key == pygame.K_a:
+                decrease_offset_x_per_frame = False
+            elif event.key == pygame.K_s:
+                increase_offset_x_per_frame = False
+
+            elif event.key == pygame.K_z:
+                decrease_offset_y_per_frame = False
+            elif event.key == pygame.K_x:
+                increase_offset_y_per_frame = False
+
     # Atualizar o tamanho das sprites ao manter a tecla pressionada
     if increase_width:
         sprite_width += size_change_speed
@@ -211,6 +240,21 @@ while running:
         recortar_sprites()
     if decrease_offset_y:
         offset_y = max(0, offset_y - size_change_speed)
+        recortar_sprites()
+
+    # Atualizar o offset entre sprites
+    if increase_offset_x_per_frame:
+        offset_x_per_frame += spacing_change_speed
+        recortar_sprites()
+    if decrease_offset_x_per_frame:
+        offset_x_per_frame = max(0, offset_x_per_frame - spacing_change_speed)
+        recortar_sprites()
+    
+    if increase_offset_y_per_frame:
+        offset_y_per_frame += spacing_change_speed
+        recortar_sprites()
+    if decrease_offset_y_per_frame:
+        offset_y_per_frame = max(0, offset_y_per_frame - spacing_change_speed)
         recortar_sprites()
 
     # Atualizar a tela

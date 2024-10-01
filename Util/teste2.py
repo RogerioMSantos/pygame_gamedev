@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Spritesheet Example")
 
 # Carregar a imagem da sprite sheet
-sprite_sheet = pygame.image.load("image.png").convert_alpha()
+sprite_sheet = pygame.image.load("./assets/bird.png").convert_alpha()
 
 # Dimensões iniciais de cada sprite
 sprite_width = 150

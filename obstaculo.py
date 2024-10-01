@@ -32,5 +32,5 @@ class Obstaculo(Rect):
 
     @staticmethod
     def get_random_image() -> tuple:
-        images = [('cone.png',(60,100)), ('caixa.png',(100,100)), ('hidrante.png',(60,100))]
+        images = [('./assets/cone.png',(60,100)), ('./assets/caixa.png',(100,100)), ('./assets/hidrante.png',(60,100))]
         return random.choice(images)

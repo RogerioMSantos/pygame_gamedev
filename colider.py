@@ -1,6 +1,6 @@
 import pygame
 
-from core.game import Game
+from bird import Bird
 from item import Item
 from objects.rect import Rect
 from obstaculo import Obstaculo
@@ -21,6 +21,7 @@ def check_collision(objects):
                             objects._objects.remove(obj2)
                             continue
                         if isinstance(obj2,Obstaculo):
-                            #obj2.collide(obj)
+                            set_menu_scene()
+                        if isinstance(obj2,Bird):
                             set_menu_scene()
 

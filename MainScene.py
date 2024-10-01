@@ -2,6 +2,7 @@ import random
 import time
 
 import pygame
+from bird import Bird
 from colider import check_collision
 from core.game_math import Vector2d
 from core.scene import Scene
@@ -15,7 +16,7 @@ from powerup import Power_up
 class MainScene(Scene):
     def __init__(self, screen):
 
-        image = pygame.image.load("background.png").convert()
+        image = pygame.image.load("./assets/background.png").convert()
         image = pygame.transform.scale(image,(screen.get_width(),screen.get_height()))
         super().__init__(screen,image=image)
 
@@ -40,6 +41,8 @@ class MainScene(Scene):
         self.game_speed_text.position = Vector2d(screen.get_width() - self.game_speed_text.image.get_width(),0)
 
         self.objects.add(self.game_speed_text)
+
+        self.birds = []
 
     def create_score_board(self):
         self.score_board = {"pontuacao" :(Text(text="Pontuação: 0", font_size=35, color=(0, 0, 0), sys_font=True,position=Vector2d(10,10)),0),
@@ -69,6 +72,10 @@ class MainScene(Scene):
 
         check_collision(self.objects)
 
+        if len(self.birds) > 0 and self.birds[0].position.x < 0:
+            self.objects.remove(self.birds[0])
+            self.birds.pop(0)
+
         if self.obstacle[0].position.x < 0:
             self.objects.remove(Obstaculo)
             self.obstacle.pop(0)
@@ -83,6 +90,10 @@ class MainScene(Scene):
             self.objects.add(obstacle)
             self.obstacle.append(obstacle)
             if self.player.is_flying:
+                if(random.choices([False, True], weights=[50, 50], k=1)[0]):
+                    self.objects.add(Bird(self.screen,speed=self.game_speed))
+                    self.birds.append(Bird(self.screen,speed=self.game_speed))
+
                 obstacle.active = False
                 max_height = self.screen.get_height()
                 if(random.choices([False, True], weights=[0, 80], k=1)[0]):
